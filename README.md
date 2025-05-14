@@ -103,6 +103,7 @@ nanoprintf has the following floating-point specific configuration defines.
 
 * `NANOPRINTF_CONVERSION_BUFFER_SIZE`: Optional, defaults to `23`. Sets the size of a character buffer used for storing the converted value. Set to a larger number to enable printing of floating-point numbers with more characters. The buffer size does include the integer part, the fraction part and the decimal separator, but does not include the sign and the padding characters. If the number does not fit into buffer, an `err` is printed. Be careful with large sizes as the conversion buffer is allocated on stack memory.
 * `NANOPRINTF_CONVERSION_FLOAT_TYPE`: Optional, defaults to `unsigned int`. Sets the integer type used for float conversion algorithm, which determines the conversion accuracy. Can be set to any unsigned integer type, like for example `uint64_t` or `uint8_t`.
+* `NANOPRINTF_PROMOTE_TO_LONG_DOUBLE`: Optional, defaults to `0` (`double`). Sets the floating-point type used for float conversion algorithm. Only available when `LDBL_MANT_DIG <= 53` and `LDBL_MAX_EXP <= 1024`.
 
 ### Sprintf Safety
 By default, npf_snprintf and npf_vsnprintf behave according to the C Standard: the provided buffer will be filled but not overrun. If the string would have overrun the buffer, a null-terminator byte will be written to the final byte of the buffer. If the buffer is `null` or zero-sized, no bytes will be written.
@@ -140,7 +141,7 @@ Like `printf`, `nanoprintf` expects a conversion specification string of the fol
 
 	None or more of the following:
 	* `h`: Use `short` for integral and write-back vararg width. Requires small modifiers enabled.
-	* `L`: Use `long double` for float vararg width (note: it will then be casted down to `double`)
+	* `L`: Use `long double` for float vararg width (note: it will then be casted down to `double` unless `NANOPRINTF_PROMOTE_TO_LONG_DOUBLE` is set to `1`)
 	* `l`: Use `long`, `double`, or wide vararg width.
 	* `hh`: Use `char` for integral and write-back vararg width. Requires small modifiers enabled.
 	* `ll`: (large specifier) Use `long long` for integral and write-back vararg width.

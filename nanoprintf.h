@@ -581,9 +581,17 @@ static NPF_NOINLINE int npf_utoa_rev(
 
 #if NANOPRINTF_USE_FLOAT_FORMAT_SPECIFIERS == 1
 
+#ifndef NANOPRINTF_PROMOTE_TO_LONG_DOUBLE
+  #define NANOPRINTF_PROMOTE_TO_LONG_DOUBLE 0
+#endif
+
 #include <float.h>
 
-#if NANOPRINTF_USE_FLOAT_SINGLE_PRECISION == 1
+#if NANOPRINTF_PROMOTE_TO_LONG_DOUBLE == 1
+  typedef long double npf_real_t;
+  #define NPF_REAL_MANT_DIG LDBL_MANT_DIG
+  #define NPF_REAL_MAX_EXP  LDBL_MAX_EXP
+#elif NANOPRINTF_USE_FLOAT_SINGLE_PRECISION == 1
   typedef float npf_real_t;
   #define NPF_REAL_MANT_DIG FLT_MANT_DIG
   #define NPF_REAL_MAX_EXP  FLT_MAX_EXP
@@ -1198,7 +1206,7 @@ int npf_vpprintf(npf_putc pc, void *pc_ctx, char const *format, va_list args) {
         if (fs.length_modifier == NPF_FMT_SPEC_LEN_MOD_LONG_DOUBLE) {
           val = (npf_real_t)va_arg(args, long double);
         } else {
-          val = va_arg(args, double);
+          val = (npf_real_t)va_arg(args, double);
         }
 #endif
 
