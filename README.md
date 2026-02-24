@@ -92,6 +92,7 @@ nanoprintf has the following static configuration flags.
 * `NANOPRINTF_USE_ALT_FORM_FLAG`: Set to `0` or `1`. Enables the `#` modifier for alternate print forms.
 * `NANOPRINTF_USE_FLOAT_SINGLE_PRECISION`: Set to `0` or `1`. Uses `float` instead of `double` for all float math. Requires `NANOPRINTF_USE_FLOAT_FORMAT_SPECIFIERS=1` and `NANOPRINTF_USE_PRECISION_FORMAT_SPECIFIERS=1`.
 * `NANOPRINTF_VISIBILITY_STATIC`: Optional define. Marks prototypes as `static` to sandbox nanoprintf.
+* `NANOPRINTF_STATIC_GLOBALS`: Optional define. Reduces call overhead. This can only be used when nanoprintf is used in a single-threaded context.
 * `NANOPRINTF_CONFIG_FILE`: Optional define. When set (e.g. `-DNANOPRINTF_CONFIG_FILE="\"my_npf_config.h\""` or `-DNANOPRINTF_CONFIG_FILE="<my_npf_config.h>"`), nanoprintf will `#include` the specified file at the top of `nanoprintf.h`, before any configuration-dependent code. This provides a FreeRTOS-style mechanism to ensure every translation unit sees the same configuration without requiring a wrapper header.
 
 If no configuration flags are specified, nanoprintf will default to "reasonable" embedded values in an attempt to be helpful: floats are enabled, but writeback, binary, and large formatters are disabled. If any configuration flags are explicitly specified, nanoprintf requires that all flags are explicitly specified.
